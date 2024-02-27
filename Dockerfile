@@ -1,5 +1,6 @@
 # syntax=docker/dockerfile:1.6
-FROM alpine:3.19.1
+ARG ALPINE_IMAGE_TAG=3.19.1
+FROM alpine:${ALPINE_IMAGE_TAG}
 
 ARG TARGETPLATFORM
 ARG GH_CLI_VERSION=2.44.1
