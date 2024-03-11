@@ -3,7 +3,7 @@ ARG ALPINE_IMAGE_TAG=3.19.1
 FROM alpine:${ALPINE_IMAGE_TAG}
 
 ARG TARGETPLATFORM
-ARG GH_CLI_VERSION=2.44.1
+ARG GH_CLI_VERSION=2.45.0
 
 # Update packages and install dependencies
 RUN apk update && \
@@ -15,7 +15,8 @@ RUN apk update && \
 RUN export RELEASE_PLATFORM="${TARGETPLATFORM//\//_}" && \
     curl -LJ https://github.com/cli/cli/releases/download/v${GH_CLI_VERSION}/gh_${GH_CLI_VERSION}_${RELEASE_PLATFORM}.tar.gz -o gh_${GH_CLI_VERSION}_${RELEASE_PLATFORM}.tar.gz && \
     tar -xzvf gh_${GH_CLI_VERSION}_${RELEASE_PLATFORM}.tar.gz && \
-    install -m 755 gh_${GH_CLI_VERSION}_${RELEASE_PLATFORM}/bin/gh /usr/local/bin
+    install -m 755 gh_${GH_CLI_VERSION}_${RELEASE_PLATFORM}/bin/gh /usr/local/bin && \
+    rm -rf gh_${GH_CLI_VERSION}_${RELEASE_PLATFORM}*
 
 ENTRYPOINT ["gh"]
-# CMD ["--help"]
+CMD ["--help"]
