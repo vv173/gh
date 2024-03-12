@@ -8,8 +8,8 @@ ARG GH_CLI_VERSION=2.45.0
 # Update packages and install dependencies
 RUN apk update && \
     apk upgrade && \
-    apk add --no-cache curl git && \
-    rm -rf /etc/apk/cache
+    apk add --no-cache curl git ca-certificates && \
+    update-ca-certificates 2>/dev/null || true 
 
 # Download and install binaries
 RUN export RELEASE_PLATFORM="${TARGETPLATFORM//\//_}" && \
@@ -19,6 +19,12 @@ RUN export RELEASE_PLATFORM="${TARGETPLATFORM//\//_}" && \
     rm -rf gh_${GH_CLI_VERSION}_${RELEASE_PLATFORM}*
 
 FROM scratch
+
+# copy the ca-certificate.crt from the build stage
+COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+
+# Copy gh binary
 COPY --from=builder /usr/local/bin/gh /gh
+
 ENTRYPOINT ["/gh"]
 CMD ["--help"]
