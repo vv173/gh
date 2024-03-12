@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.6
 ARG ALPINE_IMAGE_TAG=3.19.1
-FROM alpine:${ALPINE_IMAGE_TAG}
+FROM alpine:${ALPINE_IMAGE_TAG} AS builder
 
 ARG TARGETPLATFORM
 ARG GH_CLI_VERSION=2.45.0
@@ -18,5 +18,7 @@ RUN export RELEASE_PLATFORM="${TARGETPLATFORM//\//_}" && \
     install -m 755 gh_${GH_CLI_VERSION}_${RELEASE_PLATFORM}/bin/gh /usr/local/bin && \
     rm -rf gh_${GH_CLI_VERSION}_${RELEASE_PLATFORM}*
 
-ENTRYPOINT ["gh"]
+FROM scratch
+COPY --from=builder /usr/local/bin/gh /gh
+ENTRYPOINT ["/gh"]
 CMD ["--help"]
