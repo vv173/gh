@@ -1,0 +1,37 @@
+name: Check GitHub cli version
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 22 * * 1-5" # Run at 10 PM from Monday to Friday
+
+jobs:
+  update-version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Install jq tool
+        run: |
+          sudo apt-get update
+          sudo apt-get install jq
+      - name: Get the latest GitHub cli version
+        run: |
+          echo "LATEST_VERSION=$(curl -s 'https://api.github.com/repos/cli/cli/releases/latest' | jq -r '.tag_name' | sed 's/^v//')" >> $GITHUB_ENV
+      - name: Get the current Dockerfile GitHub CLI version
+        id: current_version
+        run: |
+          echo "CURRENT_VERSION=$(awk -F'=' '/ARG GH_CLI_VERSION/{print $2}' Dockerfile)" >> $GITHUB_ENV
+      - name: Compare versions
+        if: env.CURRENT_VERSION != env.LATEST_VERSION
+        run: |
+          sed -i "s/ARG GH_CLI_VERSION=${{ env.CURRENT_VERSION }}/ARG GH_CLI_VERSION=${{ env.LATEST_VERSION }}/" Dockerfile
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        if: ${{ env.CURRENT_VERSION != env.LATEST_VERSION }}
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: Update GitHub CLI to version ${{ env.LATEST_VERSION }}
+          branch: update-gh-cli-${{ env.LATEST_VERSION }}
+          title: Update GitHub CLI to version ${{ env.LATEST_VERSION }}
+          body: Automatically generated PR to update GitHub CLI version.
