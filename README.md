@@ -28,6 +28,14 @@ For example, to list your repos:
 docker run -it v17v3/gh:latest repo list
 ```
 
+It can be useful to have a bash function to avoid typing the whole docker command:
+
+```bash
+gh() {
+  docker run --rm -i -v "${PWD}":/workdir v17v3/gh:latest "$@"
+}
+```
+
 ### Authentication
 
 To authenticate with GitHub using your Dockerized `gh` CLI:

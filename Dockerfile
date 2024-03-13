@@ -26,5 +26,7 @@ COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 # Copy gh binary
 COPY --from=builder /usr/local/bin/gh /gh
 
+WORKDIR /workspace
+
 ENTRYPOINT ["/gh"]
 CMD ["--help"]
