@@ -55,17 +55,11 @@ jobs:
         uses: aquasecurity/trivy-action@7b7aa264d83dc58691451798b4d117d53d21edfe
         with:
           image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          format: 'template'
-          template: '@/contrib/sarif.tpl'
+          format: 'table'
+          exit-code: '1'
           ignore-unfixed: true
-          output: 'trivy-results.sarif'
+          vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
-  
-      - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v2
-        if: always()
-        with:
-          sarif_file: 'trivy-results.sarif'
 
       # Login against a Docker Hub registry except on PR
       - name: Login to Docker Hub
