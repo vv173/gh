@@ -23,7 +23,7 @@ jobs:
         run: |
           echo "CURRENT_VERSION=$(awk -F'=' '/ARG GH_CLI_VERSION/{print $2}' Dockerfile)" >> $GITHUB_ENV
       - name: Compare versions
-        if: env.CURRENT_VERSION != env.LATEST_VERSION
+        if: ${{ env.CURRENT_VERSION != env.LATEST_VERSION }}
         run: |
           sed -i "s/ARG GH_CLI_VERSION=${{ env.CURRENT_VERSION }}/ARG GH_CLI_VERSION=${{ env.LATEST_VERSION }}/" Dockerfile
       - name: Create Pull Request

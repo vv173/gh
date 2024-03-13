@@ -5,6 +5,10 @@ FROM alpine:${ALPINE_IMAGE_TAG} AS builder
 ARG TARGETPLATFORM
 ARG GH_CLI_VERSION=2.45.0
 
+
+LABEL org.opencontainers.image.title="gh" \
+      org.opencontainers.image.version="${GH_CLI_VERSION}"
+
 # Update packages and install dependencies
 RUN apk update && \
     apk upgrade && \
