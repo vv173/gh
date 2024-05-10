@@ -3,7 +3,7 @@ ARG ALPINE_IMAGE_TAG=3.19.1
 FROM alpine:${ALPINE_IMAGE_TAG} AS builder
 
 ARG TARGETPLATFORM
-ARG GH_CLI_VERSION=2.49.0
+ARG GH_CLI_VERSION=2.49.1
 ARG GH_EXTENSIONS=""
 
 # Update packages and install dependencies
