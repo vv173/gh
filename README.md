@@ -61,7 +61,14 @@ cd gh/
 2. Build the image with:
 
 ```bash
-docker buildx build --build-arg GH_CLI_VERSION=2.45.0 --push -t gh:latest .
+docker buildx build --build-arg GH_CLI_VERSION=2.49.1 --push -t gh:latest .
+```
+
+## Verifying Image Signatures
+
+To ensure the integrity and authenticity of the Docker image, you can verify its signature using cosign. Here's how to do it:
+```bash
+cosign verify --key cosign.pub v17v3/gh:latest
 ```
 
 ## Contributing
