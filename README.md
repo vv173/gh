@@ -61,7 +61,7 @@ cd gh/
 2. Build the image with:
 
 ```bash
-docker buildx build --build-arg GH_CLI_VERSION=2.45.0 --push -t gh:latest .
+docker buildx build --build-arg GH_CLI_VERSION=2.49.1 --push -t gh:latest .
 ```
 
 ## Contributing
