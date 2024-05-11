@@ -30,7 +30,7 @@ jobs:
         if: ${{ env.CURRENT_VERSION != env.LATEST_VERSION }}
         run: |
           sed -i "s/ARG GH_CLI_VERSION=${{ env.CURRENT_VERSION }}/ARG GH_CLI_VERSION=${{ env.LATEST_VERSION }}/" Dockerfile
-          
+
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
         if: ${{ env.CURRENT_VERSION != env.LATEST_VERSION }}
