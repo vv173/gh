@@ -102,6 +102,7 @@ jobs:
         run: echo "${TAGS}" | xargs -I {} cosign sign --yes --key env://COSIGN_PRIVATE_KEY {}@${DIGEST}
 
       - name: Run Trivy vulnerability scanner
+        if: ${{ github.event_name != 'pull_request' }}
         uses: aquasecurity/trivy-action@master
         with:
           image-ref: ${{ steps.meta.outputs.tags }}
