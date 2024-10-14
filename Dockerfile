@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1.6
-ARG ALPINE_IMAGE_TAG=3.20.1
+ARG ALPINE_IMAGE_TAG=3.20.3
 FROM alpine:${ALPINE_IMAGE_TAG} AS builder
 
 ARG TARGETPLATFORM
